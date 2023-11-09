@@ -5,12 +5,13 @@ This project revives a previous private project that created a simple elasticsea
 
 ## Preparation
 
-Pull the basic Elasticsearch image. Note that the "latest" tag is not supported so you need to pull a specific version. For the present, version "8.5.3" is the latest.
+Pull the basic [Elasticsearch image](https://hub.docker.com/_/elasticsearch). Note that the "latest" tag is not supported so you need to pull a specific version. For the present, version "8.11.0" is the latest.
 Then create a dedicated network.
 
 
 ```
-docker pull docker.elastic.co/elasticsearch/elasticsearch:8.5.3
+export ES_VERSION=8.11.0
+docker pull docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
 docker network create elastic
 ```
 
@@ -30,7 +31,7 @@ docker run --name es01 --net elastic -p 9200:9200 -it \
 -e discovery.type=single-node \
 -e ES_JAVA_OPTS="-Xms1g -Xmx1g" \
 -e ELASTIC_PASSWORD=elastic \
-docker.elastic.co/elasticsearch/elasticsearch:8.5.3
+docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
 ```
 
 Copy the private certificate from the instance to your local host.
@@ -57,7 +58,7 @@ curl --cacert http_ca.crt -n --netrc-file ./netrc https://localhost:9200
 Pull the Kibana image.
 
 ```
-docker pull docker.elastic.co/kibana/kibana:8.5.3
+docker pull docker.elastic.co/kibana/kibana:${ES_VERSION}
 ```
 
 Start a Kibana instance.
@@ -67,7 +68,7 @@ docker run \
 --name kibana \
 --net elastic \
 -p 5601:5601 \
-docker.elastic.co/kibana/kibana:8.5.3
+docker.elastic.co/kibana/kibana:${ES_VERSION}
 ```
 
 You need to create an enrollment token.

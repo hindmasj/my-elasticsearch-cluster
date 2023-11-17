@@ -87,6 +87,24 @@ Then connect to the kibana instance at (http://localhost:5601/) and provide the 
 
 This is ongoing, using scripts and Docker Compose to create a basic cluster.
 
+```
+bin/setup.sh
+```
+
+### With Scripts
+
+These scripts perform the steps described in the following sections. (In Progress).
+
+Define which version of Elasticsearch and Kibana you want by editing "bin/common.sh".
+
+Set up required images and files with ``bin/setup.sh``.
+
+Launch and configure the containers with ``bin/launch.sh``.
+
+Test all is well with ``bin/test.sh``.
+
+### Setup
+
 Start by defining the [Elasticsearch image version](https://hub.docker.com/_/elasticsearch) you require as an environment variable and pull the images.
 
 ```

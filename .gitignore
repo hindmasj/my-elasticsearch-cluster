@@ -1,2 +1,4 @@
 netrc
 http_ca.crt
+enrollment-token
+verification-code

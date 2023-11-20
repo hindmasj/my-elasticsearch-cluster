@@ -54,26 +54,24 @@ So that proves how to connect the NiFi nodes to the elastic network.
 
 For extra credit use the Netrc and CA files too.
 
-```
-docker compose -p my-nifi-cluster cp netrc nifi:/opt/nifi/nifi-current/.netrc
-docker compose -p my-nifi-cluster cp http_ca.crt nifi:/opt/nifi/nifi-current/
-docker compose -p my-nifi-cluster exec nifi curl -n --cacert http_ca.crt https://host.docker.internal:9200/_cat/nodes
-```
-
-Currently I get this error, indicating I need to match the target host with the hostname in the certificate.
+Using the Netrc file. Note the location of NiFi's home directory. Had to build definition of **host.docker.internal** into the netrc file, which has been added to the curl setup script.
 
 ```
-curl: (60) SSL: no alternative certificate subject name matches target host name 'host.docker.internal'
-More details here: https://curl.se/docs/sslcerts.html
+docker compose -p my-nifi-cluster cp netrc nifi:/home/nifi/.netrc
+docker compose -p my-nifi-cluster exec nifi curl -n -k https://host.docker.internal:9200/_cat/nodes
+```
 
-curl failed to verify the legitimacy of the server and therefore could not
-establish a secure connection to it. To learn more about this situation and
-how to fix it, please visit the web page mentioned above.
+That works. Using the CA file I had to add the name "host.docker.internal" as a subject alternative name to the certificate for es01. This was done by modifying the command for the setup service that defines the certificates.
+
+```
+docker compose -p my-nifi-cluster cp http_ca.crt nifi:/opt/nifi/nifi-current/es_ca.crt
+docker compose -p my-nifi-cluster exec nifi curl -n --cacert es_ca.crt https://host.docker.internal:9200/_cat/nodes
 ```
 
 ### TODO
 
 * Automate connection of all NiFI nodes.
+* Create a trust store for the NiFI nodes.
 * Create an API key for NiFi.
 * Create some put and lookup services and flows.
 

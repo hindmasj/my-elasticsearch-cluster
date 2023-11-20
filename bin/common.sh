@@ -1,10 +1,12 @@
 # Common config for scripts
 
-BASE_VERSION=8.11
-ES_VERSION=${BASE_VERSION}.1
-KB_VERSION=${BASE_VERSION}.1
+# Define ELASTIC_PASSWORD STACK_VERSION ES_PORT
+TOP=$(dirname ${LOC})
+. ${TOP}/.env
+export STACK_VERSION
 
 ES_HOME=/usr/share/elasticsearch
 KB_HOME=/usr/share/kibana
-
-export ES_VERSION KB_VERSION ES_HOME KB_HOME
+ES_NODE=es01
+NETRC=${TOP}/netrc
+CA_CRT=${TOP}/http_ca.crt

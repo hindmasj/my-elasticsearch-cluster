@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+    es_master:
+        hostname: es_master
+        container_name: es_master
+        image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
+        ports:
+            - 9200
+        environment:
+            - discovery.type=single-node
+            - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
+            - ELASTIC_PASSWORD=elastic
+        networks:
+            elasticsearch:
+                aliases:
+                    - esm_01
+    kibana:
+        hostname: kibana
+        container_name: kibana
+        image: docker.elastic.co/kibana/kibana:${KB_VERSION}
+        ports:
+            - 5601:5601
+        networks:
+            - elasticsearch
+
+networks:
+    elasticsearch:
+        name: elasticsearch
+        
+        
